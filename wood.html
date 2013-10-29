@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Number Game</title>
+	
+	<script type="text/javascript">
+
+	var tiles = [];
+	var empty = 15;
+	var clickCount = 0;
+	window.onload = function(){
+		var game = document.getElementById("game");
+		var randomNumbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
+
+		var randNum = 0;
+		var temp = 0;
+
+		for(var x = 13; x >= 0; x--){
+			randNum = Math.floor((Math.random()*x));
+			temp = randomNumbers[randNum];
+			randomNumbers[randNum] = randomNumbers[x+1];
+			randomNumbers[x+1] = temp;
+		}
+
+		
+		
+		var lastUser = localStorage.getItem("kapour/numbergame/LastUser");
+
+		if(lastUser != "undefined"){
+			$$("playerName").value = lastUser;
+			$$("fastest").innerHTML = localStorage.getItem("kapour/numbergame/FastestScore");	
+		} else {
+			$$("playerName").value = "Your Name";
+			$$("fastest").innerHTML = "";
+			localStorage.setItem("kapour/numbergame/LastUser", "Your Name");
+			localStorage.setItem("kapour/numbergame/FastestScore", 100000);
+		}
+
+		for(var j = 0; j < 4; j++){
+			for (var i = 0; i < 4; i++){
+				if(j === 3 && i === 3) return;
+				var tile = document.createElement("div");
+				tile.id = "tile-" + (j*4 + i);
+				tile.className = "tile";
+				tile.style.left = i*100 + "px";
+				tile.left = (i*100);
+				tile.top = j*100;
+				tile.dataset.index = (j*4 + i);
+				tile.style.top = j*100 + "px";				
+				tile.innerHTML = randomNumbers[j*4 + i];
+
+				tile.onclick = (function(t){
+					return function(){
+						tap(t);
+					}
+				})(tile);
+				tiles.push(tile);
+				game.appendChild(tile);
+			}
+		}
+
+
+
+	}
+
+	function won(){
+		if(empty != 15) return false;
+
+		for(var index = 0; index < 15; index++){
+			 if(parseInt($$("tile-" + index).dataset.index) != parseInt($$("tile-" + index).innerHTML) - 1) return false;
+		}
+
+		var user = localStorage.getItem("kapour/numbergame/LastUser");
+
+		var fastestScore = parseInt(localStorage.getItem("kapour/numbergame/FastestScore"));
+
+		var clickCount = parseInt(document.getElementById("clickCount").innerHTML);
+		
+		if(fastestScore > clickCount){
+			$$("fastest").innerHTML = clickCount;
+			localStorage.setItem("kapour/numbergame/FastestScore", clickCount);
+			$$("message").innerHTML = "New Record :)";
+		}  else {
+			$$("message").innerHTML = "Try again :(";
+		}
+
+		return true;
+
+	}
+
+	function savePlayerName(){
+		console.log("Saving user name");
+		localStorage.setItem("kapour/numbergame/LastUser", $$("playerName").value);
+	}
+
+	function $$(id){
+		return document.getElementById(id);
+	}
+
+	function tap(item){
+		var index = parseInt(item.dataset.index);
+		var temp = empty;
+
+		document.getElementById("clickCount").innerHTML = ++clickCount;
+
+		if(empty-4 === index){
+			item.top = item.top + 100;
+			item.style.top = item.top + "px";
+			empty = index;
+			item.dataset.index = temp;
+		} else if(empty+4 === index){
+			item.top = item.top - 100;
+			item.style.top = item.top + "px";
+			empty = index;
+			item.dataset.index = temp;
+		} else if(empty-1 === index && empty%4 != 0){
+			item.left = item.left + 100;
+			item.style.left = item.left + "px";
+			empty = index;
+			item.dataset.index = temp;
+		} else if(empty+1 === index && index%4 != 0){
+			item.left = item.left - 100;
+			item.style.left = item.left + "px";
+			empty = index;
+			item.dataset.index = temp;
+		}
+
+		if(parseInt(item.dataset.index) === parseInt(item.innerHTML) - 1){
+			item.style.color = "#B3A37A"
+		} else {
+			item.style.color = "rgb(184, 184, 184)"
+		}
+
+		console.log(won());
+	}
+
+	</script>
+	<style type="text/css">
+
+	body{
+		margin: 50px auto;
+    	width:800px; 		    	
+    	background-image: url("images/background.png");
+	}
+
+	.atPosition{
+		color: #B3A37A;
+	}
+
+	#game{
+		position: relative;
+		float: left;
+		width: 400px;
+		height: 400px;
+		background-color: #241C05;
+		box-shadow: inset 6px 6px 12px #000, 2px 2px 1px #776F5D,  -2px -2px 2px #111;
+	}
+
+	.tile{
+		position: absolute;
+		clear: both;
+		font-family: Arial;
+		font-size: 39px;
+		color: rgb(184, 184, 184);
+		text-shadow: 1px 1px 1px #5F3E24, -1px -1px 1px #2C1B0A;
+		text-align: center;
+		line-height: 100px;
+		width: 100px;
+		-webkit-transition: top .1s, left .1s;
+		-webkit-transition-timing-function: cubic-bezier(0.98,1);
+		height: 100px;
+		box-shadow: inset 1px 1px 1px #8A8A8A, inset -1px -1px 1px #050202;
+		background: -webkit-linear-gradient(left top, rgba(111, 92, 75, 1), rgba(75, 62, 45, 1));
+		cursor: pointer;
+	}
+
+	#header{
+		width: 100%;
+		height: 100px;
+		/*background-color: red;*/
+	}
+
+	#header p{
+		font-family: Arial;
+		font-size: 45px;
+		font-weight: 700;
+		line-height: 100px;
+		color: #070503;
+		text-shadow: 1px 1px 1px #1F1811, -1px -1px 2px #4D350C;
+	}
+
+	#score{
+		position: relative;
+		float: right;
+		width: 400px;
+		height: 400px;
+		/*background-color: green;*/
+	}
+
+	#score #board{
+		position: relative;
+		margin-left: 20px;
+		width: 360px;
+		height: 360px;
+		/*top: -70px;*/
+	}	
+
+	#score #board p{
+		width: 100%;
+		text-align: center;
+		line-height: 30px;
+		font-family: Arial;
+		font-size: 32px;
+		color: black;
+		font-weight: 900;
+		text-shadow: 1px 1px 2px #634724, -2px -2px 2px #442A08;
+	}
+
+	.cell{
+		position: relative;
+		left: 10%;
+		float: left;
+		width: 50%;
+		font-family: Arial;
+		font-size: 22px;
+		text-align: left;
+		font-weight: 600;
+		text-shadow: 1px 1px 1px #614F3B, -1px -1px 1px #333;
+		color: #978A72;	
+		/*background-color: green;*/
+		height: 67px;
+	}
+
+	.message{
+		width: 100%;
+		line-height: 30px;
+		font-family: Arial;
+		font-size: 32px;
+		color: black;
+		text-align: center;
+		font-weight: 900;
+		text-shadow: 1px 1px 2px #634724, -2px -2px 2px #442A08;
+	}
+
+
+	#playerName{
+		background-color: rgba(0,0,0,0);
+		outline: none;
+		border: 0px;
+		height: 25px;
+	}
+
+	#clickCount{
+		/*background-color: red;*/
+		/*float: right;*/
+		/*width: 50%;*/
+		/*height: 67px;*/
+	}
+
+	#fastest{
+		/*background-color: red;*/
+		/*float: right;*/
+		/*width: 50%;*/
+		/*height: 67px;*/
+	}
+
+	.row{
+		width: 100%;
+		height: 67px;
+		/*background-color: yellow;*/
+	}
+
+	.rcell{
+		width: 40%;
+		color: black;
+
+	}
+	body{
+		background-color: #222;
+	}
+	</style>
+</head>
+<body>
+<div id="header"><p>Number Game</p></div>
+<div id="game"></div>
+<div id="score">
+	<div id="board">
+		<p>Score Board</p>
+		<div class="row">
+			<div class="cell">Name</div>
+			<input type="textbox" class="cell rcell" id="playerName" contenteditable onchange="savePlayerName()">
+		</div>
+		<div class="row">
+			<div class="cell">Clicks</div>
+			<div class="cell rcell" id="clickCount">0</div>
+		</div>
+		<div class="row">
+			<div class="cell">Fastest</div>
+			<div class="cell rcell" id="fastest"></div>
+		</div>
+		<div class="row">
+			<div id="message" class="message"></div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
