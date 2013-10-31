@@ -79,7 +79,8 @@ var storage = (function(){
 
 })();
 
-window.onload = function(){
+var init = function(){
+	alert('Starting');
 	var game = document.getElementById("game");		
 			
 	$$("playerName").addEventListener("blur", function(){
