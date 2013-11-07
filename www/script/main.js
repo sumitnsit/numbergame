@@ -79,9 +79,16 @@ var storage = (function(){
 
 })();
 
+
+// window.onload = function(){
+
+// 	init();
+// }
+
 var init = function(){
-	alert('Starting');
 	var game = document.getElementById("game");		
+
+	tileSize = game.offsetWidth/4;
 			
 	$$("playerName").addEventListener("blur", function(){
 		storage.setUser(this.innerText);
@@ -104,7 +111,9 @@ var init = function(){
 			tile.style.top = j*tileSize + "px";				
 			tile.innerHTML = randomTiles.getTiles()[j*4 + i];
 
-			tile.addEventListener("touchstart", (function(t){
+			var clickEventType=((document.ontouchstart!==null)?'mousedown':'touchstart');
+
+			tile.addEventListener(clickEventType, (function(t){
 				return function(){
 					console.log("calling tap");
 					tap(t);
