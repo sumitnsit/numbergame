@@ -88,8 +88,12 @@ var storage = (function(){
 var init = function(){
 	var game = document.getElementById("game");		
 
-	tileSize = game.offsetWidth/4;
+	
+	game.style.width = 0.98*window.innerWidth + "px";
+	game.style.height = 0.98*window.innerWidth + "px";
 			
+	tileSize = game.offsetWidth/4;
+
 	$$("playerName").addEventListener("blur", function(){
 		storage.setUser(this.innerText);
 	}, false);

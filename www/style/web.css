@@ -11,11 +11,11 @@ body{
 
 #game{
 	position: absolute;
-	top: 25vw;
-	left: 1vw;
+	/*top: 25vw;
+	left: 1vw;*/
 	float: left;
-	width: 98vw;
-	height: 98vw;
+	/*width: 98vw;*/
+	/*height: 98vw;*/
 	background-color: #ADADAD;
 	box-shadow: inset 2px 2px 3px #222, 2px 2px 2px #fff, -1px -1px 1px #111;
 }
