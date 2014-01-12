@@ -58,12 +58,12 @@ body{
 .tile{
 	position: absolute;
 	background-color: #333;
-	font-size: 10vw;
+	font-size: 2em;
 	color: #E7E7E7;
 	text-align: center;
-	line-height: 24.5vw;
-	width: 24.5vw;
-	height: 24.5vw;
+	/*line-height: 24.5vw;*/
+/*	width: 24.5vw;
+	height: 24.5vw;*/
 	-webkit-transition: top .1s, left .1s;
 	box-shadow: inset 1px 1px 1px #555555, inset -1px -1px 1px #000000;
 }
