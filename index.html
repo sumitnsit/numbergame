@@ -1,1 +1,33 @@
-Hello World!
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Number Game</title>
+	<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:300,400' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<script type="text/javascript" src="main.js"></script>
+</head>
+<body>
+<div id="header"><p>Number Game</p></div>
+<div id="game"></div>
+<div id="score">
+	<div id="board">
+		<p>Score</p>
+		<div class="row">
+			<div class="cell">Name</div>
+			<input type="textbox" class="cell rcell" id="playerName">
+		</div>
+		<div class="row">
+			<div class="cell">Clicks</div>
+			<div class="cell rcell" id="clickCount">0</div>
+		</div>
+		<div class="row">
+			<div class="cell">Fastest</div>
+			<div class="cell rcell" id="fastest"></div>
+		</div>
+		<div class="row">
+			<div id="message" class="message"></div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
